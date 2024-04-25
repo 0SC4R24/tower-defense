@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4237c5b93103594fa307b898276eace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateEnum: 3
+  stateEnum: 4
   anim: {fileID: 0}
   rb: {fileID: 0}
   target: {fileID: 1457744845}
@@ -947,8 +947,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  followMaxSpeed: 0
-  steeringMaxSpeed: 0
+  followMaxSpeed: 300
+  steeringMaxSpeed: 0.2
 --- !u!114 &1370879148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1221,7 +1221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  wanderMaxSpeed: 200
+  wanderMaxSpeed: 300
   steeringMaxSpeed: 0.2
 --- !u!114 &1457744855
 MonoBehaviour:
@@ -1237,7 +1237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  pursueMaxSpeed: 200
+  pursueMaxSpeed: 300
   steeringMaxSpeed: 0.2
 --- !u!114 &1457744856
 MonoBehaviour:
@@ -1253,7 +1253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  evadeMaxSpeed: 200
+  evadeMaxSpeed: 300
   steeringMaxSpeed: 0.2
 --- !u!114 &1457744857
 MonoBehaviour:
@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  fleeMaxSpeed: 200
+  fleeMaxSpeed: 300
   steeringMaxSpeed: 0.2
 --- !u!114 &1457744858
 MonoBehaviour:
@@ -1285,7 +1285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  seekMaxSpeed: 200
+  seekMaxSpeed: 300
   steeringMaxSpeed: 0.2
 --- !u!114 &1457744859
 MonoBehaviour:
@@ -1301,7 +1301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemyAIStateMotor: {fileID: 0}
   aiBehaviour: {fileID: 0}
-  followMaxSpeed: 200
+  followMaxSpeed: 300
   steeringMaxSpeed: 0.2
 --- !u!114 &1457744860
 MonoBehaviour:
@@ -1317,9 +1317,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolRoutes: {fileID: 11400000, guid: 726095ecf10ba1c4b9856fa23a20b7bb, type: 2}
   patrolRoute: 0
-  maxSpeed: 200
-  steeringMaxSpeed: 0.2
-  stoppingDistance: 2
+  maxSpeed: 0
+  steeringMaxSpeed: 0
+  stoppingDistance: 0
   areVectorsOnDisplay: 0
 --- !u!114 &1457744861
 MonoBehaviour:
@@ -1333,7 +1333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4237c5b93103594fa307b898276eace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateEnum: 4
+  stateEnum: 5
   anim: {fileID: 0}
   rb: {fileID: 0}
   target: {fileID: 1370879132}
