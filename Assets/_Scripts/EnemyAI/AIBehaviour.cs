@@ -21,7 +21,7 @@ public class AIBehaviour : MonoBehaviour
     private Transform[] _pathPoints;
     private int _currentRouteIndex;
     private float _sqrRemainingDistance;
-    private bool _pathPending;
+    private bool _pathPending = true;
 
     private void Start()
     {
@@ -111,7 +111,7 @@ public class AIBehaviour : MonoBehaviour
     public void FollowPath(Rigidbody rb)
     {
         var target = _pathPoints[_currentRouteIndex].position;
-
+        
         if (CheckNextPoint()) target = SetNextRoutePoint();
         
         Seek(target, rb);
