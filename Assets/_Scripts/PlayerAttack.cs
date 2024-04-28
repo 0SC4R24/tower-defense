@@ -12,49 +12,66 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float bulletLifeTime;
     [SerializeField] private float fireRate;
     
-    private bool _canFire = true;
+    [Header("Attack Range Settings")]
+    [SerializeField] private LineRenderer attackRangeLine;
+    [SerializeField] private float attackRange;
+    [SerializeField] private int subdivisions;
     
-    private GameObject nearestEnemy;
+    private bool _canFire = true;
+
+    public void UpgradeAttackRange()
+    {
+        if (!(GameManager.Instance.GetCoins() >= 1)) return; 
+        
+        GameManager.Instance.SubtractCoins(1);
+        attackRange += 1.0f;
+    }
+    
+    private void DrawCircle()
+    {
+        float angleStep = 2f * Mathf.PI / subdivisions;
+        
+        attackRangeLine.positionCount = subdivisions;
+
+        for (int i = 0; i < subdivisions; i++)
+        {
+            float xPosition = attackRange * Mathf.Cos(angleStep * i);
+            float zPosition = attackRange * Mathf.Sin(angleStep * i);
+            
+            Vector3 pointInCircle = new Vector3(xPosition, 0f, zPosition);
+            
+            attackRangeLine.SetPosition(i, pointInCircle);
+        }
+    }
 
     private void Update()
     {
-        RaycastHit hit;
-        Debug.DrawLine(transform.position, transform.position + new Vector3(0, 0, -10), Color.cyan, 2.5f);
-        if (Physics.SphereCast(transform.position, 10.0f, transform.forward, out hit, 10.0f) && _canFire)
+        if (GameManager.Instance.IsPaused()) return;
+        
+        DrawCircle();
+        
+        int maxColliders = 20;
+        Collider[] hits = new Collider[maxColliders];
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, attackRange, hits);
+        
+        for (int i = 0; i < numColliders; i++)
         {
-            nearestEnemy = hit.collider.gameObject;
-            StartCoroutine(Fire());
+            if (hits[i].gameObject.CompareTag("Enemy") && _canFire) StartCoroutine(Fire(hits[i].gameObject));
         }
     }
     
-    private IEnumerator Fire()
+    private IEnumerator Fire(GameObject enemy)
     {
-        Debug.Log("Fire");
         _canFire = false;
         var bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        bullet.GetComponent<EnemyAIStateMotor>().target = nearestEnemy.transform;
+        bullet.GetComponent<EnemyAIStateMotor>().target = enemy.transform;
+        var enemyStateMotor = enemy.GetComponent<EnemyAIStateMotor>();
+        enemyStateMotor.targetRb = bullet.GetComponent<Rigidbody>();
+        enemyStateMotor.target = bullet.transform;
+        enemyStateMotor.stateEnum = AIState.Evade;
+        bullet.transform.parent = transform.parent;
         Destroy(bullet, bulletLifeTime);
         yield return new WaitForSeconds(fireRate);
         _canFire = true;
-    }
-    
-    private Transform GetNearestEnemy()
-    {
-        var enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        var nearestEnemy = enemies[0];
-        var nearestDistance = Vector3.Distance(transform.position, nearestEnemy.transform.position);
-        
-        foreach (var enemy in enemies)
-        {
-            var distance = Vector3.Distance(transform.position, enemy.transform.position);
-            
-            if (distance < nearestDistance)
-            {
-                nearestEnemy = enemy;
-                nearestDistance = distance;
-            }
-        }
-        
-        return nearestEnemy.transform;
     }
 }

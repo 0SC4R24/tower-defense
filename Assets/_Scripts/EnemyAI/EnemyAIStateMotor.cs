@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -35,6 +36,7 @@ public class EnemyAIStateMotor : MonoBehaviour
     public bool isPlayerOnSight, isIdleDone;
 
     private BaseState m_state;
+    public int _health;
 
     private void Awake()
     {
@@ -44,23 +46,39 @@ public class EnemyAIStateMotor : MonoBehaviour
         m_state = GetComponent<AISeekState>();
     }
 
+    private void OnEnable()
+    {
+        _health = GameManager.Instance.GetEnemyHealth();
+    }
+
     private void Start()
     {
         targetRb = target.GetComponent<Rigidbody>();
         m_state.Construct();
+        _health = GameManager.Instance.GetEnemyHealth();
     }
 
     private void Update()
     {
-        //if(!GameManager.Instance.isPaused)
+        if (GameManager.Instance.IsPaused()) return;
+        
         UpdateMotor();
     }
 
     private void FixedUpdate()
     {
+        if (GameManager.Instance.IsPaused()) return;
+        
         m_state.FixedUpdateState();
     }
 
+    public bool TakeDamage(int amount)
+    {
+        _health -= amount;
+
+        return _health <= 0;
+    }
+    
     private void UpdateMotor()
     {
         m_state.Transition();

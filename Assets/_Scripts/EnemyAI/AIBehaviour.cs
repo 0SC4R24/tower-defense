@@ -126,7 +126,7 @@ public class AIBehaviour : MonoBehaviour
         _pathPoints = patrolRoutes.GetPatrolRoute(patrolRoute).ToArray();
     }
     
-    private void SetNewRoute(PatrolRoute newRoute)
+    public void SetNewRoute(PatrolRoute newRoute)
     {
         patrolRoute = newRoute;
         _pathPoints = patrolRoutes.GetPatrolRoute(patrolRoute).ToArray();
@@ -135,7 +135,15 @@ public class AIBehaviour : MonoBehaviour
 
     private Vector3 SetNextRoutePoint()
     {
-        _currentRouteIndex = ++_currentRouteIndex % _pathPoints.Length;
+        ++_currentRouteIndex;
+        
+        if (_currentRouteIndex == _pathPoints.Length)
+        {
+            GameManager.Instance.SubtractCoins(GameManager.Instance.GetEnemyReward());
+            EnemyManager.Instance.RemoveEnemy(gameObject);
+        }
+        
+        _currentRouteIndex %= _pathPoints.Length;
         return _pathPoints.Length == 0 ? Vector3.zero : SetTarget(_pathPoints[_currentRouteIndex].position);
     }
 
